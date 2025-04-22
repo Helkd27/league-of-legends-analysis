@@ -7,6 +7,13 @@ An early game advantage, such as securing kills, objectives, or gold, can often 
 
 ## Data Cleaning and Exploratory Data Analysis
 
+<iframe
+ src="assets/golddiff.html"
+ width="800"
+ height="600"
+ frameborder="0"
+></iframe>
+
 ### Data Cleaning
 
 ### Univariate Analysis
