@@ -3,7 +3,7 @@
 ## Introduciton
 League of Legends (aka LoL or League) is a popular multiplayer online battle arena (MOBA) game where two teams of five players compete to destroy the opposing team's base. Each match involves strategic decision-making, teamwork, and individual skill. 
 
-An early game advantage, such as securing kills, objectives, or gold, can often lead to a "snowball effect." This occurs when the team with the advantage continues to grow stronger, making it increasingly difficult for the opposing team to recover. Learning more about the outcome of the game give early game choices can show which where the focus of the players should be to help maximize the chances that they win the game. In this analysis I hope to answer **what should the focus of the team be to maximize the chance that they will win the game**.
+An early game advantage, such as securing kills, objectives, or gold, can often lead to a "snowball effect." This occurs when the team with the advantage continues to grow stronger, making it increasingly difficult for the opposing team to recover. Learning more about the outcome of the game give early game choices can show which where the focus of the players should be to help maximize the chances that they win the game. In this analysis I hope to answer what should the focus of the team be to maximize the chance that they will win the game. In other words, **what early game statistic has the highest impact on the result of game.**
 
 To answer this, we will use games played from 2022, which the complete data set contains 150588 rows and 161 columns. The columns that will be focused on the following columns
 
@@ -51,8 +51,8 @@ Below is the first 5 rows of with the selected columns
 Starting this analysis, we can look at the percentages of games with a positive win rate looking at the gold difference 10 minutes into the game. The pie plot below shows this, by showing the games with a postive gold difference, and the number of games that were won and lost. We can see that over two thirds of the teams that had a postive gold difference 10 minutes into the game ended up winning the game!
 <iframe
  src="assets/win_rate_pie_chart.html"
- width="800"
- height="600"
+ width="600"
+ height="400"
  frameborder="0"
 ></iframe>
 
@@ -71,14 +71,15 @@ Looking at the distribution of the games that were won or lost based on the gold
 
 <iframe
  src="assets/golddiff.html"
- width="800"
- height="600"
+ width="600"
+ height="400"
  frameborder="0"
 ></iframe>
 
 ### Interesting Aggregates
 
 Grouping by teams, I was curious as to how the first tower affected the mean win rate. The following graph shows that the average of wins is higher per team for the games that they got the first tower. This is another example on how an early game advantage can lead winning the game, i.e. the "snowball" affect.
+
 | teamid                          |      False |      True |
 |:--------------------------------|---------:|---------:|
 | ff07fcf769a41fa17ded4746368d6c7 | 0.5      | 0.757576 |
@@ -88,6 +89,18 @@ Grouping by teams, I was curious as to how the first tower affected the mean win
 | fca935f82fd01de843aa2799eb575ea | 0.206897 | 0.272727 |
 
 ## Framing a Prediction Model
+
+Looking at the primlimiary analysis from the above section, we can see that early game advantage shown by positive Gold and XP difference more often then not causes the team with these advantages to win. 
+
+Going back to the origional question stated in the introduction, we can solve this problem using a **binary classification model**. This model will be predicting the `result` column, indicating the whether the team won the game or not. The baseline model will be trained on all columns with distinct data points from 10 minutes into the game. These include: 
+- `golddiffat10`
+-  `xpdiffat10`
+- `csdiffat10` 
+- `killsat10`
+- `deathsat10`
+- `assistsat10`
+
+To evaulate the baseline and eventually the final model, *F1-score* will be used. This is because it accounts for imbalanced data and it avoids a false preception that *accuracy* can lead to.
 
 ## Baseline Model
 
