@@ -96,7 +96,7 @@ Going back to the origional question stated in the introduction, we can solve th
 - `golddiffat10`
 -  `xpdiffat10`
 - `csdiffat10` 
-- `killsat10`
+- `killsat10` 
 - `deathsat10`
 - `assistsat10`
 
@@ -155,10 +155,31 @@ The hyperparameters were selected using `GridSearchCV`, which performs an exhaus
 
 The final models were evaluated on the test set, and their performance metrics were compared to the baseline model. The results are summarized below:
 
-| Model           | F1 Score | Accuracy |
-|------------------|----------|----------|
-| Baseline (KNN)   | 0.65492  | 0.65447  |
-| Final (KNN)      | 0.71234  | 0.71056  |
-| Final (Random Forest) | 0.73567  | 0.73289  |
+| Model         |   F1 Score |   Accuracy |
+|:--------------|-----------:|-----------:|
+| Random Forest |   0.847125 |   0.847785 |
+| KNN           |   0.840623 |   0.840653 |
 
 The final models showed a significant improvement over the baseline model. The Random Forest Classifier outperformed KNN in both F1-score and accuracy, making it the preferred model for this task. The inclusion of additional features and the use of hyperparameter tuning contributed to the improved performance, as the model could better capture the complex relationships between early game events and game outcomes.
+
+### Feature Importance Analysis
+
+To better understand the factors influencing the final model's predictions, we analyzed the feature importances from the Random Forest Classifier. The table below highlights the top five features and their respective importance scores:
+
+| Feature            |   Importance |
+|:-------------------|-------------:|
+| firstbaron         |    0.459617  |
+| firsttothreetowers |    0.165464  |
+| firstmidtower      |    0.11258   |
+| golddiffat10       |    0.0731515 |
+| xpdiffat10         |    0.0637435 |
+
+### Explanation of Results
+
+The feature importance analysis reveals that securing the **first baron** is the most critical factor in determining game outcomes, with an importance score of 0.459617. This aligns with the game's mechanics, as the baron buff provides a significant advantage in terms of pushing power and team strength. Following this, **first to three towers** and **first mid tower** also play substantial roles, emphasizing the importance of early map control and objective prioritization.
+
+Interestingly, while **gold difference at 10 minutes** and **XP difference at 10 minutes** are important, their lower scores suggest that early game objectives (like baron and towers) have a more direct impact on the game's result than raw resource advantages.
+
+### Answering the Question from the Introduction
+
+The analysis answers the question posed in the introduction: **"What early game statistic has the highest impact on the result of the game?"** Based on the feature importance scores, the early game statistic with the highest impact is securing the **first baron**. This finding underscores the importance of prioritizing key objectives over purely focusing on resource accumulation, as these objectives provide both immediate and long-term strategic advantages that significantly increase the likelihood of winning the game.
