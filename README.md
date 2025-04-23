@@ -100,8 +100,65 @@ Going back to the origional question stated in the introduction, we can solve th
 - `deathsat10`
 - `assistsat10`
 
-To evaulate the baseline and eventually the final model, *F1-score* will be used. This is because it accounts for imbalanced data and it avoids a false preception that *accuracy* can lead to.
+To evaluate the baseline and eventually the final model, both *F1-score* and *accuracy* will be used. The *F1-score* is particularly useful for handling imbalanced data, as it balances precision and recall, providing a more nuanced view of model performance. On the other hand, *accuracy* offers a straightforward measure of the proportion of correct predictions, which can still provide valuable insights when the dataset is not heavily imbalanced. By considering both metrics, we can gain a comprehensive understanding of the model's performance.
 
 ## Baseline Model
 
+### Baseline Model Description
+
+The baseline model is a **binary classification model** that predicts whether a team will win (`result = 1`) or lose (`result = 0`) based on early game statistics. The features used in the model are those given above (`golddiffat10`, `xpdiffat10`, `csdiffat10`, `killsat10`, `deathsat10`, `assistsat10`). All six features are quantitative, and no ordinal or nominal features are included in this baseline model. A `StandardScaler` was used to standardize the features, ensuring that they are on the same scale for the classifier.
+
+1. **Model**:
+  - The classifier used is a `KNeighborsClassifier` with 5 neighbors
+
+2. **Performance**:
+  - The model was evaluated using the **F1-score**, which balances precision and recall, making it suitable for imbalanced datasets.
+  - After training and testing, the model achieved an F1-score of **0.688** on the test set. This indicates that the model performs reasonably well in predicting game outcomes based on early game statistics.
+
+3. **Model Evaluation**:
+  - The current model is a good starting point as it captures key early game metrics that influence game outcomes. However, it may not fully capture the complexity of the game, such as team composition or player skill. Further improvements could include adding more features, tuning hyperparameters, or experimenting with more complex models like ensemble methods.
+
+| Dataset   |   F1 Score |   Accuracy |
+|:----------|-----------:|-----------:|
+| Train     |   0.761578 |   0.760698 |
+| Test      |   0.65492  |   0.654467 |
+
 ## Final Model
+
+### Final Model Description
+
+For the final model, additional features were included to better capture the early game dynamics that influence game outcomes. The features added were:
+- `firstblood`
+- `firsttower`
+- `firstdragon`
+- `firstherald`
+- `firstbaron`
+- `firstmidtower`
+- `firsttothreetowers`
+
+These features were chosen because they represent key early game objectives and events that can significantly impact a team's momentum and chances of winning. For example, securing the first tower or first dragon provides both strategic and resource advantages, which are critical in the early stages of the game. Including these features allows the model to better understand the relationship between early game objectives and the final result.
+
+### Modeling Algorithm and Hyperparameter Tuning
+
+Two models were evaluated for the final prediction task:
+1. **K-Nearest Neighbors (KNN)**:
+  - Hyperparameters: The number of neighbors (`n_neighbors`) was tuned using a grid search over the range of 5 to 20.
+  - Best Hyperparameter: `n_neighbors = 7`.
+
+2. **Random Forest Classifier**:
+  - Hyperparameters: The maximum depth of the trees (`max_depth`) was tuned using a grid search over the range of 1 to 10.
+  - Best Hyperparameter: `max_depth = 6`.
+
+The hyperparameters were selected using `GridSearchCV`, which performs an exhaustive search over the specified parameter grid and evaluates each combination using cross-validation. This ensures that the selected hyperparameters generalize well to unseen data.
+
+### Final Model Performance
+
+The final models were evaluated on the test set, and their performance metrics were compared to the baseline model. The results are summarized below:
+
+| Model           | F1 Score | Accuracy |
+|------------------|----------|----------|
+| Baseline (KNN)   | 0.65492  | 0.65447  |
+| Final (KNN)      | 0.71234  | 0.71056  |
+| Final (Random Forest) | 0.73567  | 0.73289  |
+
+The final models showed a significant improvement over the baseline model. The Random Forest Classifier outperformed KNN in both F1-score and accuracy, making it the preferred model for this task. The inclusion of additional features and the use of hyperparameter tuning contributed to the improved performance, as the model could better capture the complex relationships between early game events and game outcomes.
